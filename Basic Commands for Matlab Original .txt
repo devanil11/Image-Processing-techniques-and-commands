@@ -1,0 +1,33 @@
+Basic Commands for Matlab Original Image and Image Negation
+
+
+r = imread("images (1).jfif");
+imshow(r);
+red  = r(:,:,1);
+imshow(red);
+[row column plane ]= size(r);
+z= zeros (row,column);
+green= r(:,:,2);
+blue = r(:,:,3);
+imshow(blue);
+rred= cat(3,red,z,z);
+imshow(rred);
+rgreen = cat(3,z,green,z);
+imshow(rred);
+rblue= cat(3,z,z,blue);
+q= imresize(r,[100 150]);
+figure, imshow(q);
+close all;
+[xr xc xpl]= size(q);
+%Image Negation
+output = 255-q;
+figure,imshow(output);
+output2= q;
+for xi= 1:xr
+    for xj = 1:floor(xc/2)
+        for xk= 1:3
+              output (xi,xj,xk)= 255-q(xi,xj ,xk);
+        end
+    end
+end
+figure,imshow(output2);
