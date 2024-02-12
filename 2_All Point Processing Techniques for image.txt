@@ -1,0 +1,83 @@
+All Point Processing Techniques for Image 
+
+q = imread('/MATLAB Drive/nature.jpg');
+[xr xc xpl]=size(q);
+op=q;
+%image negation
+    for xi = 1:floor(xr/3)
+       for xj = 1:floor(xc/3)
+            for xk = 1:3
+                op(xi,xj,xk) = 255-q(xi,xj,xk);
+            end
+        end
+    end
+%brightening of image
+    for xi = 1:floor(xr/3)
+        for xj = floor(1+(xc/3)):floor((2*xc)/3)
+            for xk = 1:3
+            op(xi,xj,xk) = q(xi,xj,xk)+40;
+            end
+        end
+    end
+%darkening of image
+    for xi = 1:floor(xr/3)
+        for xj = floor(1+((2*xc)/3)):xc
+            for xk = 1:3
+                op(xi,xj,xk) = q(xi,xj,xk)-100;
+               end
+        end
+    end
+%thresholding with T=128
+       for xi = floor(1+(xr/3)):floor((2*xr)/3)
+            for xj = 1:floor(xc/3)
+                    for xk = 1:3
+                            if q(xi,xj,xk)>127
+                                    op(xi,xj,xk) = 255;
+                            else
+                                    op(xi,xj,xk) = 0;
+                            end
+                    end
+            end
+        end
+%keep image as it is for 5th division
+%grey level slicing with highlighting 100-200 and retain rest
+        for xi = floor(1+(xr/3)):floor((2*xr)/3)
+                for xj = floor(1+((2*xc)/3)):xc
+                        for xk = 1:3
+                                if q(xi,xj,xk)>99 & q(xi,xj,xk)<201
+                                    op(xi,xj,xk) = 255;
+                                end
+                        end
+                end
+        end
+%highlight bit plane 7
+    for xi = floor(1+((2*xr)/3)):xr
+            for xj = 1:floor(xc/3)
+                    for xk = 1:3
+                            b=bitget(q(xi,xj,xk) ,8);
+                            if b==1
+                                    op(xi,xj,xk) = 255 ;
+                            end
+                    end
+            end
+    end
+%highlight bit plane 0
+    for xi = floor(1+((2*xr)/3)):xr
+        for xj = floor(1+(xc/3)):floor((2*xc)/3)
+                for xk = 1:3
+                        p=bitget(q(xi,xj,xk) ,1);
+                            if p==1
+                                op(xi,xj,xk) = 255 ;
+                            end
+                end
+         end
+    end
+%log transform with op=50log(ip)
+        for xi = floor(1+((2*xr)/3)):xr
+            for xj = floor(1+((2*xc)/3)):xc
+                for xk = 1:3
+                        op(xi,xj,xk) = uint8(50*log(double(q(xi,xj,xk)))) ;
+                end
+            end
+        end
+figure,imshow(op);
